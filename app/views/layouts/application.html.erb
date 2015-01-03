@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Testhome</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <%= link_to image_tag('logo.gif', width: 75), root_path %>
+    <% if current_user %>
+        <%= link_to 'Вийти', sessions_logout_path %>
+    <% else %>
+        <%= link_to 'Реєстрація', registration_path %>
+        <%= link_to 'Вхід', sessions_login_path %>
+        <% end %>
+
+        <%= current_user.name if current_user %>
+        <%= render 'layouts/banner' %>
+
+        <%= yield %>
+
+</body>
+</html>
