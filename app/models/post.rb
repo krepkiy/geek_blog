@@ -1,5 +1,6 @@
 class Post < ActiveRecord::Base
   belongs_to :user
+  has_many :post_votes
 
   validates_presence_of :title, :body, :user_id
   validates_uniqueness_of :title
@@ -7,4 +8,3 @@ class Post < ActiveRecord::Base
   validates_length_of :body, minimum: 140
   scope :newest, -> { order('created_at DESC') }
 end
-

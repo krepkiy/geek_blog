@@ -83,6 +83,9 @@ class PostsController < ApplicationController
     end
   end
 
+  def vote
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
@@ -97,4 +100,5 @@ class PostsController < ApplicationController
     def check_post_user
       redirect_to root_path unless current_user == (@post.user)
     end
+
 end

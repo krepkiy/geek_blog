@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141222222246) do
+ActiveRecord::Schema.define(version: 20150110001326) do
+
+  create_table "post_votes", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "post_id"
+    t.integer  "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "post_votes", ["post_id"], name: "index_post_votes_on_post_id"
+  add_index "post_votes", ["user_id", "post_id"], name: "index_post_votes_on_user_id_and_post_id", unique: true
+  add_index "post_votes", ["user_id"], name: "index_post_votes_on_user_id"
 
   create_table "posts", force: true do |t|
     t.string   "title"

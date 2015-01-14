@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   get 'sessions/logout'
 
+  post 'posts/:id/vote' => 'posts#vote'
+
   post 'sessions' => 'sessions#create'
 
   resources :posts

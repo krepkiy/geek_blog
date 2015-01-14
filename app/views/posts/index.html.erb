@@ -27,6 +27,10 @@
         <% else %>
         <% end %>
       </tr>
+      <tr>
+        <td><%= link_to 'Like', vote_post_path() %></td>
+        <td><%= link_to 'Dislike' %></td>
+      </tr>
     <% end %>
   </tbody>
 </table>
