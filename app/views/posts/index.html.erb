@@ -27,14 +27,22 @@
         <% else %>
         <% end %>
       </tr>
+      <% if current_user != post.user %>
       <tr>
-        <td><%= link_to 'Like', vote_post_path() %></td>
-        <td><%= link_to 'Dislike' %></td>
+        <table>
+          <td>Рейтинг:</td>
+          <td><%= post.rating %></td>
+          <td><%= link_to 'Подобається', vote_post_path(post, type: 'Like') %></td>
+          <td></td>
+          <td><%= link_to 'Не подобається', vote_post_path(post, type: 'Dislike') %></td>
+        </table>
       </tr>
     <% end %>
+      <% end %>
   </tbody>
 </table>
 
 <br>
-
+<%= link_to 'Active posts', posts_path(sort: 'active') %>
+<%= link_to 'Popular posts', posts_path(sort: 'popular') %>
 <%= link_to 'New Post', new_post_path if current_user %>

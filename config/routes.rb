@@ -4,11 +4,30 @@ Rails.application.routes.draw do
 
   get 'sessions/logout'
 
-  post 'posts/:id/vote' => 'posts#vote'
+  resources :posts do
+    member do
+      get 'vote'
+    end
+  end
+
+#  GET	/photos	photos#index	display a list of all photos
+  # get 'posts' => 'posts#index'
+#GET	/photos/new	photos#new	return an HTML form for creating a new photo
+  # get 'posts/new' => 'posts#new', as: :new_post
+#  POST	/photos	photos#create	create a new photo
+  # post 'posts' => 'posts#create'
+#GET	/photos/:id	photos#show	display a specific photo
+  # get 'posts/:id' => 'posts#show'
+#  GET	/photos/:id/edit	photos#edit	return an HTML form for editing a photo
+  # get 'posts/:id/edit' => 'posts#edit'
+#  PATCH/PUT	/photos/:id	photos#update	update a specific photo
+  # put 'posts/:id' => 'posts#update'
+#  DELETE	/photos/:id	photos#destroy	delete a specific photo
+  # delete 'posts/:id' => 'posts#destroy'
+
+  #  resources :posts, only: [:vote]
 
   post 'sessions' => 'sessions#create'
-
-  resources :posts
 
   get 'registration' => 'users#new'#, as: 'registration'
 

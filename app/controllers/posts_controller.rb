@@ -1,12 +1,18 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:show, :edit, :update, :destroy, :vote]
   before_action :authenticate, only: [:new, :edit, :destroy]
   before_action :check_post_user, only: [:edit, :destroy]
 
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.newest
+    if params[:sort] == 'active'
+      @posts = Post.active
+    elsif params[:sort] == 'popular'
+      @posts = Post.popular
+    else
+      @posts = Post.newest
+
    # format.json { render json: @posts, except: [:updated_at, :user_id], include :user :only :name }
     respond_to do |format|
     #format.json { render json: @posts.to_json(exept: [:updates_at, :user_id], include: :user, only: [:name] ) }
@@ -17,6 +23,7 @@ class PostsController < ApplicationController
       ### format.json { render json: @posts, except: [:updated_at, :user_id], include: [:user, {user: {only: [:name]}}] }
       format.json { render json: @posts, except: :updated_at, include: {user: {only: :name}} }
     #render json: @user.to_json(only: [:name, :email, :phone], include: :orders)
+    end
     end
    # format.json {render json: @posts,except: [:updated_at, :user_id], :include => {:user => {:only => :name}}}
   end
@@ -83,7 +90,35 @@ class PostsController < ApplicationController
     end
   end
 
+#  def vote
+#    if params[:type] === 'Like'
+#    @post.increment!(:rating)
+#    elsif params[:type] === 'Dislike'
+#    @post.decrement!(:rating)
+#    end
+#    redirect_to root_path
+#  end
+
+#  def vote
+#    @vote_value = params[:type] == 'Like' ? 1 : -1
+#    if can_vote_for
+#      @rate_value = params[:type] == 'Like' ? @post.increment!(:rating) : @post.decrement!(:rating)
+#      @post_vote = PostVote.new(user_id: current_user.id, post_id: @post.id, value: @vote_value)
+#      if @post_vote.save
+#        @post.save
+#      end
+#    end
+#    redirect_to root_path
+#  end
+
   def vote
+    @vote_value = params[:type] == 'Like' ? 1 : -1
+    @post_vote = PostVote.new(user_id: current_user.id, post_id: @post.id, value: @vote_value)
+    if @post_vote.save #оно сейвит, и если тру — идет дальше
+      redirect_to root_path(@post) #можно дописать ок месседж
+    else
+      redirect_to post_path(@post) #можно дописать инфу об ошибке
+    end
   end
 
   private
@@ -100,5 +135,10 @@ class PostsController < ApplicationController
     def check_post_user
       redirect_to root_path unless current_user == (@post.user)
     end
+
+#  def can_vote_for
+#    @rated_by = PostVote.where(user_id: current_user.id, post_id: params[:id])
+#    @rated_by.blank? && current_user != @post.user
+#  end
 
 end
